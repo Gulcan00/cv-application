@@ -3,24 +3,38 @@ import './styles/App.css';
 import PersonalInfo from './components/PersonalInfo';
 
 function App() {
+  const [isEditing, setIsEditing] = useState(null);
   const [personalInfo, setPersonalInfo] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    location: '',
+    fullName: 'Your name',
+    email: 'Email',
+    phone: 'Phone',
+    location: 'Address',
   });
 
-  const handlePersonalInfoChange = (e) => {
+  const handleSubmitPersonalInfo = (data) => {
     setPersonalInfo({
       ...personalInfo,
-      [e.target.name]: e.target.value,
+      ...data,
     });
+  };
+
+  const toggleIsEditing = (id) => {
+    if (isEditing === null) {
+      setIsEditing(id);
+    } else if (isEditing === id) {
+      setIsEditing(null);
+    }
   };
 
   return (
     <div className="container">
       <div>
-        <PersonalInfo personalInfo={personalInfo} isEditing={false} />
+        <PersonalInfo
+          personalInfo={personalInfo}
+          handleSubmit={handleSubmitPersonalInfo}
+          isEditing={isEditing === 0}
+          toggleIsEditing={() => toggleIsEditing(0)}
+        />
       </div>
     </div>
   );
