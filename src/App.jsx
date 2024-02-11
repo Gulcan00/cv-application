@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import './styles/App.css';
 import PersonalInfo from './components/PersonalInfo';
+import CV from './components/CV';
 
 function App() {
   const [isEditing, setIsEditing] = useState(null);
   const [personalInfo, setPersonalInfo] = useState({
-    fullName: 'Your name',
-    email: 'Email',
-    phone: 'Phone',
-    location: 'Address',
+    fullName: '',
+    email: '',
+    phone: '',
+    location: '',
   });
 
   const handleSubmitPersonalInfo = (data) => {
@@ -27,8 +27,8 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <div>
+    <div className="flex flex-wrap gap-16 p-8">
+      <div className="grid grid-cols-1">
         <PersonalInfo
           personalInfo={personalInfo}
           handleSubmit={handleSubmitPersonalInfo}
@@ -36,6 +36,7 @@ function App() {
           toggleIsEditing={() => toggleIsEditing(0)}
         />
       </div>
+      <CV personalInfo={personalInfo} />
     </div>
   );
 }
