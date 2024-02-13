@@ -75,7 +75,9 @@ export default function PersonalInfo({
       ) : (
         <>
           <div className="flex flex-col gap-2">
-            <EditButton onClick={toggleIsEditing} />
+            <span className="absolute top-3 right-3">
+              <EditButton onClick={toggleIsEditing} />
+            </span>
             <h1>{personalInfo.fullName || 'Your name'}</h1>
             <div className="grid grid-cols-1 gap-y-2">
               <span className="flex gap-2 items-center">

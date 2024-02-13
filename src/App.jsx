@@ -20,6 +20,25 @@ function App() {
     });
   };
 
+  const handleAddEducation = (data) => {
+    setEducation([...education, data]);
+  };
+
+  const handleEditEducation = (data) => {
+    const newEducation = education.map((item) => {
+      if (item.id === data.id) {
+        return { ...data };
+      }
+      return item;
+    });
+
+    setEducation(newEducation);
+  };
+
+  const handleDeleteEducation = (id) => {
+    setEducation(education.filter((item) => item.id !== id));
+  };
+
   const toggleIsEditing = (id) => {
     if (isEditing === null) {
       setIsEditing(id);
@@ -30,7 +49,7 @@ function App() {
 
   return (
     <div className="flex flex-wrap gap-16 p-8">
-      <div className="grid grid-cols-1 gap-y-8">
+      <div className="flex-1 max-w-[500px] grid grid-cols-1 gap-y-8">
         <PersonalInfo
           personalInfo={personalInfo}
           handleSubmit={handleSubmitPersonalInfo}
@@ -38,8 +57,12 @@ function App() {
           toggleIsEditing={() => toggleIsEditing(0)}
         />
         <Education
+          education={education}
+          handleAdd={handleAddEducation}
+          handleEdit={handleEditEducation}
+          handleDelete={handleDeleteEducation}
           isEditing={isEditing === 1}
-          toggleIsEditing={() => toggleIsEditing(1)}
+          toggleIsEditing={(id) => toggleIsEditing(id)}
         />
       </div>
       <CV personalInfo={personalInfo} />
