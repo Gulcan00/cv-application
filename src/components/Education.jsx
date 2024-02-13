@@ -8,12 +8,16 @@ import { useState } from 'react';
 import EditButton from './EditButton';
 
 function EducationForm({ onCancel, onSubmit, onDelete, defaultValues }) {
+  const [isPresent, setIsPresent] = useState(
+    defaultValues?.endDate === 'Present'
+  );
+
   return (
     <>
       <h2>{defaultValues ? 'Edit' : 'Create'} Education</h2>
       <form
         action="#"
-        className="grid grid-cols-1 gap-y-3 mt-4"
+        className="grid grid-cols-1 gap-y-3 mt-2"
         onSubmit={(e) => {
           e.preventDefault();
           const data = new FormData(e.target);
@@ -22,6 +26,9 @@ function EducationForm({ onCancel, onSubmit, onDelete, defaultValues }) {
             education.id = crypto.randomUUID();
           } else {
             education.id = defaultValues.id;
+            education.endDate = education.present
+              ? 'Present'
+              : education.endDate;
           }
           onSubmit(education);
         }}
@@ -42,7 +49,7 @@ function EducationForm({ onCancel, onSubmit, onDelete, defaultValues }) {
             defaultValue={defaultValues?.degree}
           />
         </label>
-        <div>
+        <div className="grid grid-cols-2 gap-4">
           <label>
             City
             <input name="city" type="text" defaultValue={defaultValues?.city} />
@@ -56,7 +63,43 @@ function EducationForm({ onCancel, onSubmit, onDelete, defaultValues }) {
             />
           </label>
         </div>
-        <div className="flex justify-between">
+        <div className="grid grid-cols-2 gap-4">
+          <label>
+            Start Date
+            <input
+              type="month"
+              name="startDate"
+              id="startDate"
+              defaultValue={defaultValues?.startDate}
+            />
+          </label>
+          {!isPresent && (
+            <label>
+              End Date
+              <input
+                type="month"
+                name="endDate"
+                id="endDate"
+                defaultValue={defaultValues?.endDate}
+              />
+            </label>
+          )}
+          <div className={`col-start-2 ${isPresent ? 'row-start-1' : ''}`}>
+            {isPresent && 'End Date'}
+            <label className="flex gap-2">
+              <input
+                type="checkbox"
+                name="present"
+                id="present"
+                value={isPresent}
+                onChange={(e) => setIsPresent(e.target.checked)}
+                defaultChecked={defaultValues?.endDate === 'Present'}
+              />
+              Present (Current)
+            </label>
+          </div>
+        </div>
+        <div className="flex justify-between mt-4">
           <button
             type="button"
             className="secondary"

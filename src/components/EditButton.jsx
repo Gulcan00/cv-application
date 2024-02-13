@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export default function EditButton({ onClick }) {
   return (
     <button onClick={onClick} className="edit" aria-label="Edit">
-      <FontAwesomeIcon icon={faPenToSquare} />
+      <FontAwesomeIcon icon={faPenToSquare} className="text-inherit" />
     </button>
   );
 }
