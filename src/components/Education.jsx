@@ -26,10 +26,8 @@ function EducationForm({ onCancel, onSubmit, onDelete, defaultValues }) {
             education.id = crypto.randomUUID();
           } else {
             education.id = defaultValues.id;
-            education.endDate = education.present
-              ? 'Present'
-              : education.endDate;
           }
+          education.endDate = education.present ? 'Present' : education.endDate;
           onSubmit(education);
         }}
       >
@@ -39,6 +37,7 @@ function EducationForm({ onCancel, onSubmit, onDelete, defaultValues }) {
             name="school"
             type="text"
             defaultValue={defaultValues?.school}
+            placeholder="Enter school / university"
           />
         </label>
         <label>
@@ -47,12 +46,18 @@ function EducationForm({ onCancel, onSubmit, onDelete, defaultValues }) {
             name="degree"
             type="text"
             defaultValue={defaultValues?.degree}
+            placeholder="Enter Degree / Field Of Study"
           />
         </label>
         <div className="grid grid-cols-2 gap-4">
           <label>
             City
-            <input name="city" type="text" defaultValue={defaultValues?.city} />
+            <input
+              name="city"
+              type="text"
+              defaultValue={defaultValues?.city}
+              placeholder="Enter City"
+            />
           </label>
           <label>
             Country
@@ -60,6 +65,7 @@ function EducationForm({ onCancel, onSubmit, onDelete, defaultValues }) {
               name="country"
               type="text"
               defaultValue={defaultValues?.country}
+              placeholder="Enter Country"
             />
           </label>
         </div>
@@ -86,7 +92,7 @@ function EducationForm({ onCancel, onSubmit, onDelete, defaultValues }) {
           )}
           <div className={`col-start-2 ${isPresent ? 'row-start-1' : ''}`}>
             {isPresent && 'End Date'}
-            <label className="flex gap-2">
+            <label className="flex gap-2 items-center">
               <input
                 type="checkbox"
                 name="present"
@@ -94,6 +100,7 @@ function EducationForm({ onCancel, onSubmit, onDelete, defaultValues }) {
                 value={isPresent}
                 onChange={(e) => setIsPresent(e.target.checked)}
                 defaultChecked={defaultValues?.endDate === 'Present'}
+                className="h-4 w-4"
               />
               Present (Current)
             </label>
@@ -173,7 +180,25 @@ export default function Education({
               {education.map((educationItem) => (
                 <div key={educationItem.id} className="grid grid-cols-1">
                   <div className="flex">
-                    <div className="flex-1">{educationItem.school} </div>
+                    <div className="flex-1 text-sm flex flex-col">
+                      <div>
+                        <span className="font-bold">
+                          {educationItem.degree}
+                        </span>
+                        ,{' '}
+                        <span className="italic font-light">
+                          {educationItem.school}
+                        </span>
+                      </div>
+                      <p className="m-0 text-xs">
+                        {`${educationItem.startDate.replace(
+                          '-',
+                          '/'
+                        )} - ${educationItem.endDate.replace('-', '/')}`}
+                        <span className="mx-2.5">|</span>
+                        {`${educationItem.city}, ${educationItem.country}`}
+                      </p>
+                    </div>
                     <EditButton
                       onClick={() => {
                         setEditingId(educationItem.id);

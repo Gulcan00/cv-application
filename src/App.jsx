@@ -3,6 +3,22 @@ import PersonalInfo from './components/PersonalInfo';
 import CV from './components/CV';
 import Education from './components/Education';
 
+const sortByEndDate = (list) =>
+  list.sort((a, b) => {
+    if (a.endDate === 'Present') {
+      return -1;
+    }
+
+    if (b.endDate === 'Present') {
+      return 1;
+    }
+
+    const yearMonth1 = a.endDate.split('-');
+    const yearMonth2 = b.endDate.split('-');
+
+    return yearMonth1[0] - yearMonth2[0] || yearMonth1[1] - yearMonth2[1];
+  });
+
 function App() {
   const [isEditing, setIsEditing] = useState(null);
   const [personalInfo, setPersonalInfo] = useState({
@@ -21,16 +37,19 @@ function App() {
   };
 
   const handleAddEducation = (data) => {
-    setEducation([...education, data]);
+    const newEducation = sortByEndDate([...education, data]);
+    setEducation(newEducation);
   };
 
   const handleEditEducation = (data) => {
-    const newEducation = education.map((item) => {
+    let newEducation = education.map((item) => {
       if (item.id === data.id) {
         return { ...data };
       }
       return item;
     });
+
+    newEducation = sortByEndDate(newEducation);
 
     setEducation(newEducation);
   };
@@ -48,8 +67,8 @@ function App() {
   };
 
   return (
-    <div className="flex flex-wrap gap-16 p-8">
-      <div className="flex-1 max-w-[500px] grid grid-cols-1 gap-y-8">
+    <div className="flex flex-wrap p-8 justify-between max-w-screen-2xl">
+      <div className="w-[30%] max-w-sm grid grid-cols-1 gap-y-8">
         <PersonalInfo
           personalInfo={personalInfo}
           handleSubmit={handleSubmitPersonalInfo}
@@ -65,7 +84,7 @@ function App() {
           toggleIsEditing={(id) => toggleIsEditing(id)}
         />
       </div>
-      <CV personalInfo={personalInfo} />
+      <CV personalInfo={personalInfo} education={education} />
     </div>
   );
 }
