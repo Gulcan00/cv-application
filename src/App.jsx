@@ -67,24 +67,26 @@ function App() {
   };
 
   return (
-    <div className="flex flex-wrap p-8 justify-between max-w-screen-2xl">
-      <div className="w-[30%] max-w-sm grid grid-cols-1 gap-y-8">
-        <PersonalInfo
-          personalInfo={personalInfo}
-          handleSubmit={handleSubmitPersonalInfo}
-          isEditing={isEditing === 0}
-          toggleIsEditing={() => toggleIsEditing(0)}
-        />
-        <Education
-          education={education}
-          handleAdd={handleAddEducation}
-          handleEdit={handleEditEducation}
-          handleDelete={handleDeleteEducation}
-          isEditing={isEditing === 1}
-          toggleIsEditing={(id) => toggleIsEditing(id)}
-        />
+    <div className="max-w-screen-2xl p-8 mx-auto">
+      <div className="flex flex-wrap justify-evenly">
+        <div className="w-[30%] max-w-md flex flex-col gap-y-8">
+          <PersonalInfo
+            personalInfo={personalInfo}
+            handleSubmit={handleSubmitPersonalInfo}
+            isEditing={isEditing === 0}
+            toggleIsEditing={() => toggleIsEditing(0)}
+          />
+          <Education
+            education={education}
+            handleAdd={handleAddEducation}
+            handleEdit={handleEditEducation}
+            handleDelete={handleDeleteEducation}
+            isEditing={isEditing === 1}
+            toggleIsEditing={(id) => toggleIsEditing(id)}
+          />
+        </div>
+        <CV personalInfo={personalInfo} education={education} />
       </div>
-      <CV personalInfo={personalInfo} education={education} />
     </div>
   );
 }

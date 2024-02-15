@@ -112,7 +112,11 @@ function EducationForm({ onCancel, onSubmit, onDelete, defaultValues }) {
             className="secondary"
             onClick={() => onDelete(defaultValues?.id)}
           >
-            <FontAwesomeIcon icon={faTrash} className="mr-2" />
+            <FontAwesomeIcon
+              icon={faTrash}
+              className="mr-2"
+              aria-hidden="true"
+            />
             Delete
           </button>
           <div className="flex justify-end gap-4">
@@ -141,14 +145,18 @@ export default function Education({
   const showForm = isNewEducation || !!editingId;
 
   return (
-    <div className="card">
+    <section className="card">
       {isEditing ? (
         <></>
       ) : (
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
-            <FontAwesomeIcon icon={faGraduationCap} fontSize={'1.25rem'} />{' '}
-            <h1>Education</h1>
+            <FontAwesomeIcon
+              icon={faGraduationCap}
+              fontSize={'1.25rem'}
+              aria-hidden="true"
+            />{' '}
+            <h2>Education</h2>
           </div>
           {showForm ? (
             <EducationForm
@@ -213,12 +221,17 @@ export default function Education({
                 className="secondary border-2 border-gray-300 dark:border-cyan-800 max-w-max self-center"
                 onClick={() => setIsNewEducation(true)}
               >
-                <FontAwesomeIcon icon={faPlus} className="mr-2" /> Education
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  className="mr-2"
+                  aria-label="Add"
+                />{' '}
+                Education
               </button>
             </>
           )}
         </div>
       )}
-    </div>
+    </section>
   );
 }

@@ -17,6 +17,10 @@
   @apply text-gray-800 bg-gray-200 dark:bg-gray-900 dark:text-slate-200;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

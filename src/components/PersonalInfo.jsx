@@ -10,10 +10,10 @@ export default function PersonalInfo({
   toggleIsEditing,
 }) {
   return (
-    <div className="card">
+    <section className="card">
       {isEditing ? (
         <>
-          <h1>Edit personal details</h1>
+          <h2>Edit personal details</h2>
           <form
             action="#"
             className="grid grid-cols-1 gap-y-3 mt-4"
@@ -78,7 +78,7 @@ export default function PersonalInfo({
             <span className="absolute top-3 right-3">
               <EditButton onClick={toggleIsEditing} />
             </span>
-            <h1>{personalInfo.fullName || 'Your name'}</h1>
+            <h2>{personalInfo.fullName || 'Your name'}</h2>
             <div className="grid grid-cols-1 gap-y-2">
               <span className="flex gap-2 items-center">
                 <FontAwesomeIcon icon={faEnvelope} />
@@ -96,6 +96,6 @@ export default function PersonalInfo({
           </div>
         </>
       )}
-    </div>
+    </section>
   );
 }
