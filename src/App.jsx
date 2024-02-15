@@ -2,6 +2,7 @@ import { useState } from 'react';
 import PersonalInfo from './components/PersonalInfo';
 import CV from './components/CV';
 import Education from './components/Education';
+import Work from './components/Work';
 
 const sortByEndDate = (list) =>
   list.sort((a, b) => {
@@ -28,6 +29,7 @@ function App() {
     location: '',
   });
   const [education, setEducation] = useState([]);
+  const [workExperience, setWorkExperience] = useState([]);
 
   const handleSubmitPersonalInfo = (data) => {
     setPersonalInfo({
@@ -66,9 +68,31 @@ function App() {
     }
   };
 
+  const handleAddWorkExperience = (data) => {
+    const newWorkExperience = sortByEndDate([...workExperience, data]);
+    setWorkExperience(newWorkExperience);
+  };
+
+  const handleEditWorkExperience = (data) => {
+    let newWorkExperience = workExperience.map((item) => {
+      if (item.id === data.id) {
+        return { ...data };
+      }
+      return item;
+    });
+
+    newWorkExperience = sortByEndDate(newWorkExperience);
+
+    setWorkExperience(newWorkExperience);
+  };
+
+  const handleDeleteWorkExperience = (id) => {
+    setWorkExperience(workExperience.filter((item) => item.id !== id));
+  };
+
   return (
-    <div className="max-w-screen-2xl p-8 mx-auto">
-      <div className="flex flex-wrap justify-evenly">
+    <div className="max-w-screen-2xl p-4 md:p-8 mx-auto">
+      <div className="flex flex-wrap gap-y-8 md:justify-around">
         <div className="w-[30%] max-w-md flex flex-col gap-y-8">
           <PersonalInfo
             personalInfo={personalInfo}
@@ -84,8 +108,20 @@ function App() {
             isEditing={isEditing === 1}
             toggleIsEditing={(id) => toggleIsEditing(id)}
           />
+          <Work
+            workExperience={workExperience}
+            handleAdd={handleAddWorkExperience}
+            handleEdit={handleEditWorkExperience}
+            handleDelete={handleDeleteWorkExperience}
+            isEditing={isEditing === 2}
+            toggleIsEditing={(id) => toggleIsEditing(id)}
+          />
         </div>
-        <CV personalInfo={personalInfo} education={education} />
+        <CV
+          personalInfo={personalInfo}
+          education={education}
+          workExperience={workExperience}
+        />
       </div>
     </div>
   );

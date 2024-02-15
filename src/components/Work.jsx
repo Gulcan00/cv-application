@@ -1,52 +1,52 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faGraduationCap,
+  faBriefcase,
   faPlus,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import EditButton from './EditButton';
 
-function EducationForm({ onCancel, onSubmit, onDelete, defaultValues }) {
+function WorkForm({ onCancel, onSubmit, onDelete, defaultValues }) {
   const [isPresent, setIsPresent] = useState(
     defaultValues?.endDate === 'Present'
   );
 
   return (
     <>
-      <h2>{defaultValues ? 'Edit' : 'Create'} Education</h2>
+      <h2>{defaultValues ? 'Edit' : 'Create'} Professional Experience</h2>
       <form
         action="#"
         className="grid grid-cols-1 gap-y-3 mt-2"
         onSubmit={(e) => {
           e.preventDefault();
           const data = new FormData(e.target);
-          const education = Object.fromEntries(data.entries());
+          const job = Object.fromEntries(data.entries());
           if (!defaultValues) {
-            education.id = crypto.randomUUID();
+            job.id = crypto.randomUUID();
           } else {
-            education.id = defaultValues.id;
+            job.id = defaultValues.id;
           }
-          education.endDate = education.present ? 'Present' : education.endDate;
-          onSubmit(education);
+          job.endDate = job.present ? 'Present' : job.endDate;
+          onSubmit(job);
         }}
       >
         <label>
-          School
+          Job Title
           <input
-            name="school"
+            name="jobTitle"
             type="text"
-            defaultValue={defaultValues?.school}
-            placeholder="Enter school / university"
+            defaultValue={defaultValues?.jobTitle}
+            placeholder="Enter job title"
           />
         </label>
         <label>
-          Degree
+          Employer
           <input
-            name="degree"
+            name="employer"
             type="text"
-            defaultValue={defaultValues?.degree}
-            placeholder="Enter Degree / Field Of Study"
+            defaultValue={defaultValues?.employer}
+            placeholder="Enter employer"
           />
         </label>
         <div className="grid grid-cols-2 gap-4">
@@ -106,6 +106,16 @@ function EducationForm({ onCancel, onSubmit, onDelete, defaultValues }) {
             </label>
           </div>
         </div>
+        <label>
+          Description
+          <textarea
+            name="description"
+            id="description"
+            rows="10"
+            placeholder="Describe your role & acheivements"
+            defaultValue={defaultValues?.description}
+          ></textarea>
+        </label>
         <div className="flex justify-between mt-4 items-center">
           <button
             type="button"
@@ -131,8 +141,8 @@ function EducationForm({ onCancel, onSubmit, onDelete, defaultValues }) {
   );
 }
 
-export default function Education({
-  education,
+export default function Work({
+  workExperience,
   handleAdd,
   handleEdit,
   handleDelete,
@@ -140,9 +150,9 @@ export default function Education({
   toggleIsEditing,
 }) {
   const [editingId, setEditingId] = useState(null);
-  const [isNewEducation, setIsNewEducation] = useState(false);
+  const [isNewJob, setIsNewJob] = useState(false);
 
-  const showForm = isNewEducation || !!editingId;
+  const showForm = isNewJob || !!editingId;
 
   return (
     <section className="card">
@@ -152,27 +162,29 @@ export default function Education({
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
             <FontAwesomeIcon
-              icon={faGraduationCap}
+              icon={faBriefcase}
               fontSize={'1.25rem'}
               aria-hidden="true"
             />{' '}
-            <h2>Education</h2>
+            <h2>Professional Experience</h2>
           </div>
           {showForm ? (
-            <EducationForm
+            <WorkForm
               key={editingId || 0}
-              defaultValues={education.find((item) => item.id === editingId)}
+              defaultValues={workExperience.find(
+                (item) => item.id === editingId
+              )}
               onCancel={() => {
-                if (isNewEducation) {
-                  setIsNewEducation(false);
+                if (isNewJob) {
+                  setIsNewJob(false);
                 } else {
                   setEditingId(null);
                 }
               }}
               onSubmit={(data) => {
-                if (isNewEducation) {
+                if (isNewJob) {
                   handleAdd(data);
-                  setIsNewEducation(false);
+                  setIsNewJob(false);
                 } else {
                   handleEdit(data);
                   setEditingId(null);
@@ -185,32 +197,29 @@ export default function Education({
             />
           ) : (
             <>
-              {education.map((educationItem) => (
-                <div key={educationItem.id} className="grid grid-cols-1">
+              {workExperience.map((job) => (
+                <div key={job.id} className="grid grid-cols-1">
                   <div className="flex">
                     <div className="flex-1 text-sm flex flex-col">
                       <div>
-                        <span className="font-bold">
-                          {educationItem.degree}
-                        </span>
-                        ,{' '}
+                        <span className="font-bold">{job.jobTitle}</span>,{' '}
                         <span className="italic font-light">
-                          {educationItem.school}
+                          {job.employer}
                         </span>
                       </div>
                       <p className="m-0 text-xs">
-                        {`${educationItem.startDate.replace(
+                        {`${job.startDate.replace(
                           '-',
                           '/'
-                        )} - ${educationItem.endDate.replace('-', '/')}`}
+                        )} - ${job.endDate.replace('-', '/')}`}
                         <span className="mx-2.5">|</span>
-                        {`${educationItem.city}, ${educationItem.country}`}
+                        {`${job.city}, ${job.country}`}
                       </p>
                     </div>
                     <EditButton
                       onClick={() => {
-                        setEditingId(educationItem.id);
-                        toggleIsEditing(educationItem.id);
+                        setEditingId(job.id);
+                        toggleIsEditing(job.id);
                       }}
                     />
                   </div>
@@ -219,14 +228,14 @@ export default function Education({
               <button
                 type="button"
                 className="secondary border-2 border-gray-300 dark:border-cyan-800 max-w-max self-center"
-                onClick={() => setIsNewEducation(true)}
+                onClick={() => setIsNewJob(true)}
               >
                 <FontAwesomeIcon
                   icon={faPlus}
                   className="mr-2"
                   aria-label="Add"
                 />{' '}
-                Education
+                Professional Experience
               </button>
             </>
           )}
